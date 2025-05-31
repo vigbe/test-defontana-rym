@@ -1,9 +1,12 @@
 import { Component, Input, OnChanges } from '@angular/core';
+import { NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-totals',
-  templateUrl: './totals.component.html',
-  styleUrls: ['./totals.component.scss']
+    selector: 'app-totals',
+    templateUrl: './totals.component.html',
+    styleUrls: ['./totals.component.scss'],
+    standalone: true,
+    imports: [NgFor]
 })
 export class TotalsComponent implements OnChanges {
   @Input() characters: any[] = [];

@@ -1,11 +1,14 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { CharacterService } from '../../services/character.service';
+import { NgIf, DatePipe } from '@angular/common';
 
 
 @Component({
-  selector: 'app-characters-details',
-  templateUrl: './characters-details.component.html',
-  styleUrls: ['./characters-details.component.scss']
+    selector: 'app-characters-details',
+    templateUrl: './characters-details.component.html',
+    styleUrls: ['./characters-details.component.scss'],
+    standalone: true,
+    imports: [NgIf, DatePipe]
 })
 export class CharactersDetailsComponent implements OnChanges {
   @Input() character: any;
