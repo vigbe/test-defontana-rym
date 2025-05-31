@@ -1,40 +1,59 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { CharacterService } from '../../services/character.service';
-
+import { NgIf, NgFor, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-characters-details',
   templateUrl: './characters-details.component.html',
-  styleUrls: ['./characters-details.component.scss']
+  styleUrls: ['./characters-details.component.scss'],
+  standalone: true,
+  imports: [NgIf, NgFor, DatePipe]
 })
 export class CharactersDetailsComponent implements OnChanges {
   @Input() character: any;
   origin: any = null;
-  originResident: any = null;
+  originResidents: any[] = [];
   location: any = null;
-  locationResident: any = null;
+  locationResidents: any[] = [];
   episode: any = null;
 
   constructor(private characterService: CharacterService) {}
 
   ngOnChanges() {
     if (this.character) {
-      if (this.character.origin.url) {
+      // Origen
+      if (this.character.origin?.url) {
         this.characterService.getLocation(this.character.origin.url).subscribe(loc => {
           this.origin = loc;
-          this.originResident = loc.residents.length ? loc.residents[0] : null;
+          this.originResidents = (loc.residents && loc.residents.length)
+            ? loc.residents.slice(0, 3) // Muestra hasta 3 residentes si quieres
+            : [];
         });
+      } else {
+        this.origin = null;
+        this.originResidents = [];
       }
-      if (this.character.location.url) {
+
+      // Localización
+      if (this.character.location?.url) {
         this.characterService.getLocation(this.character.location.url).subscribe(loc => {
           this.location = loc;
-          this.locationResident = loc.residents.length ? loc.residents[0] : null;
+          this.locationResidents = (loc.residents && loc.residents.length)
+            ? loc.residents.slice(0, 3)
+            : [];
         });
+      } else {
+        this.location = null;
+        this.locationResidents = [];
       }
-      if (this.character.episode.length) {
+
+      // Episodio
+      if (this.character.episode?.length) {
         this.characterService.getEpisode(this.character.episode[0]).subscribe(ep => {
           this.episode = ep;
         });
+      } else {
+        this.episode = null;
       }
     }
   }

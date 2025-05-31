@@ -1,30 +1,46 @@
-<div *ngIf="character">
-  <img [src]="character.image" alt="{{character.name}}" />
-  <h2>{{character.name}}</h2>
-  <p>Estado: {{character.status}}</p>
-  <p>Especie: {{character.species}}</p>
-  <p>Tipo: {{character.type || 'N/A'}}</p>
-  <p>PseudoGenero: {{character.gender}}</p>
-  <p>Creación: {{character.created | date}}</p>
-  <div>
+<div *ngIf="character; else noCharacter">
+  <img [src]="character.image" [alt]="character.name" class="character-image" />
+  <h2>{{ character.name }}</h2>
+  <p><strong>Status:</strong> {{ character.status }}</p>
+  <p><strong>Species:</strong> {{ character.species }}</p>
+  <p><strong>Type:</strong> {{ character.type || 'N/A' }}</p>
+  <p><strong>Gender:</strong> {{ character.gender }}</p>
+  <p><strong>Created:</strong> {{ character.created | date:'yyyy-MM-dd' }}</p>
+
+  <div class="location-block">
     <h3>Origen</h3>
-    <p>{{origin?.name || 'Desconocido'}}</p>
-    <div *ngIf="originResident; else noOriginRes">
-      <span>Residente: {{originResident}}</span>
+    <p><strong>Nombre:</strong> {{ origin?.name || 'Desconocido' }}</p>
+    <div *ngIf="originResidents.length; else noOriginResidents">
+      <span *ngFor="let resident of originResidents; let i = index">
+        Residente {{i + 1}}: {{ resident }}
+      </span>
     </div>
-    <ng-template #noOriginRes>No tiene residentes.</ng-template>
+    <ng-template #noOriginResidents>
+      <span>No tiene residentes.</span>
+    </ng-template>
   </div>
-  <div>
+
+  <div class="location-block">
     <h3>Localización</h3>
-    <p>{{location?.name || 'Desconocido'}}</p>
-    <div *ngIf="locationResident; else noLocationRes">
-      <span>Residente: {{locationResident}}</span>
+    <p><strong>Nombre:</strong> {{ location?.name || 'Desconocido' }}</p>
+    <div *ngIf="locationResidents.length; else noLocationResidents">
+      <span *ngFor="let resident of locationResidents; let i = index">
+        Residente {{i + 1}}: {{ resident }}
+      </span>
     </div>
-    <ng-template #noLocationRes>No tiene residentes.</ng-template>
+    <ng-template #noLocationResidents>
+      <span>No tiene residentes.</span>
+    </ng-template>
   </div>
-  <div>
+
+  <div class="episode-block">
     <h3>Episodio</h3>
-    <span *ngIf="episode; else noEpisode">{{episode?.name}}</span>
-    <ng-template #noEpisode>No tiene episodios.</ng-template>
+    <span *ngIf="episode; else noEpisode">{{ episode?.name }}</span>
+    <ng-template #noEpisode>
+      <span>No tiene episodios.</span>
+    </ng-template>
   </div>
 </div>
+<ng-template #noCharacter>
+  <p>Selecciona un personaje para ver los detalles.</p>
+</ng-template>
