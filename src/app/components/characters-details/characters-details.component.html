@@ -1,24 +1,11 @@
 <div *ngIf="character; else noCharacter">
   <img [src]="character.image" [alt]="character.name" class="character-image" />
   <h2>{{ character.name }}</h2>
-  <p><strong>Status:</strong> {{ character.status }}</p>
-  <p><strong>Species:</strong> {{ character.species }}</p>
-  <p><strong>Type:</strong> {{ character.type || 'N/A' }}</p>
-  <p><strong>Gender:</strong> {{ character.gender }}</p>
-  <p><strong>Created:</strong> {{ character.created | date:'yyyy-MM-dd' }}</p>
-
-  <div class="location-block">
-    <h3>Origen</h3>
-    <p><strong>Nombre:</strong> {{ origin?.name || 'Desconocido' }}</p>
-    <div *ngIf="originResidents.length; else noOriginResidents">
-      <span *ngFor="let resident of originResidents; let i = index">
-        Residente {{i + 1}}: {{ resident }}
-      </span>
-    </div>
-    <ng-template #noOriginResidents>
-      <span>No tiene residentes.</span>
-    </ng-template>
-  </div>
+  <p><strong>Estado Actual:</strong> {{ character.status }}</p>
+  <p><strong>Especie:</strong> {{ character.species }}</p>
+  <p><strong>Tipo:</strong> {{ character.type || 'Ninguno especifico' }}</p>
+  <p><strong>Genero:</strong> {{ character.gender }}</p>
+  <p><strong>Fecha de creacion:</strong> {{ character.created | date:'yyyy-MM-dd' }}</p>
 
   <div class="location-block">
     <h3>Localización</h3>

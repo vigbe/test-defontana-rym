@@ -23,6 +23,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class CharactersListComponent implements OnInit {
   displayedColumns: string[] = [
     'name',
+    'image',
     'status',
     'species',
     'type',
