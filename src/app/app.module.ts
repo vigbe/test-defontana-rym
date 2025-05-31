@@ -11,6 +11,9 @@ import { CharactersListComponent } from './components/characters-list/characters
 import { CharactersDetailsComponent } from './components/characters-details/characters-details.component';
 import { TotalsComponent } from './components/totals/totals.component';
 import { SearchFiltersComponent } from './components/search-filters/search-filters.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MatTableModule } from '@angular/material/table';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -23,10 +26,14 @@ import { SearchFiltersComponent } from './components/search-filters/search-filte
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    MatTableModule,
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    provideAnimationsAsync()
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

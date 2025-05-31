@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   characters: any[] = []; // <-- Para <app-totals>
-  selectedCharacter: any = null; // <-- Para <app-character-detail>
+  selectedCharacter: any = null; // <-- Para <app-characters-details>
 }
