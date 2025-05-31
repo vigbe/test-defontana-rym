@@ -1,1 +1,5 @@
-<p>favorites works!</p>
+<div *ngIf="favorite">
+  <span>{{ favorite.name }}</span>
+</div>
+<div *ngIf="!favorite">
+  <p>No hay favoritos.</p>

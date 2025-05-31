@@ -1,1 +1,30 @@
-<p>characters-details works!</p>
+<div *ngIf="character">
+  <img [src]="character.image" alt="{{character.name}}" />
+  <h2>{{character.name}}</h2>
+  <p>Estado: {{character.status}}</p>
+  <p>Especie: {{character.species}}</p>
+  <p>Tipo: {{character.type || 'N/A'}}</p>
+  <p>PseudoGenero: {{character.gender}}</p>
+  <p>Creación: {{character.created | date}}</p>
+  <div>
+    <h3>Origen</h3>
+    <p>{{origin?.name || 'Desconocido'}}</p>
+    <div *ngIf="originResident; else noOriginRes">
+      <span>Residente: {{originResident}}</span>
+    </div>
+    <ng-template #noOriginRes>No tiene residentes.</ng-template>
+  </div>
+  <div>
+    <h3>Localización</h3>
+    <p>{{location?.name || 'Desconocido'}}</p>
+    <div *ngIf="locationResident; else noLocationRes">
+      <span>Residente: {{locationResident}}</span>
+    </div>
+    <ng-template #noLocationRes>No tiene residentes.</ng-template>
+  </div>
+  <div>
+    <h3>Episodio</h3>
+    <span *ngIf="episode; else noEpisode">{{episode?.name}}</span>
+    <ng-template #noEpisode>No tiene episodios.</ng-template>
+  </div>
+</div>

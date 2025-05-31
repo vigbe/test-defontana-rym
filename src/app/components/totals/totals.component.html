@@ -1,1 +1,12 @@
-<p>totals works!</p>
+<div>
+  <h4>Totales por especie</h4>
+  <ul>
+    <li *ngFor="let item of speciesTotals">{{item.key}}: {{item.count}}</li>
+  </ul>
+</div>
+<div>
+  <h4>Totales por tipo</h4>
+  <ul>
+    <li *ngFor="let item of typeTotals">{{item.key}}: {{item.count}}</li>
+  </ul>
+</div>

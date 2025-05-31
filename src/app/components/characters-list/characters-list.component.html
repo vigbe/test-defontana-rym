@@ -1,1 +1,15 @@
 <p>characters-list works!</p>
+<app-search-filters (filterChange)="onFilterChange($event)"></app-search-filters>
+<table mat-table [dataSource]="characters">
+  <!-- Columnas: name, status, species, type, gender, created -->
+  <!-- ... -->
+  <tr *ngFor="let character of characters" (click)="selectCharacter(character)">
+    <td>{{character.name}}</td>
+    <td>{{character.status}}</td>
+    <td>{{character.species}}</td>
+    <td>{{character.type}}</td>
+    <td>
+      <button (click)="markAsFavorite(character); $event.stopPropagation()">*</button>
+    </td>
+  </tr>
+</table>

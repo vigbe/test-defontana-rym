@@ -1,1 +1,7 @@
-<p>search-filters works!</p>
+<input type="text" placeholder="Nombre" [(ngModel)]="filters.name"
+(input)="emitChange()" />
+<select [(ngModel)]="filters.status" (change)="emitChange()">
+  <option value="">Todos los estados</option>
+  <option value="Alive">Vivo</option>
+  <option value="Dead">Muerto</option>
+  <option value="unknown">Desconocido</option>
