@@ -1,3 +1,8 @@
+<!-- character-list.component.html -->
+<div class="filters">
+  <app-search-filters (filterChange)="onFilterChange($event)"></app-search-filters>
+</div>
+
 <table mat-table [dataSource]="characters" class="mat-elevation-z8">
 
   <!-- Name Column -->
@@ -21,7 +26,7 @@
   <!-- Type Column -->
   <ng-container matColumnDef="type">
     <th mat-header-cell *matHeaderCellDef> Type </th>
-    <td mat-cell *matCellDef="let character"> {{character.type}} </td>
+    <td mat-cell *matCellDef="let character"> {{character.type || 'N/A'}} </td>
   </ng-container>
 
   <!-- Gender Column -->
@@ -33,10 +38,20 @@
   <!-- Created Column -->
   <ng-container matColumnDef="created">
     <th mat-header-cell *matHeaderCellDef> Created </th>
-    <td mat-cell *matCellDef="let character"> {{character.created | date}} </td>
+    <td mat-cell *matCellDef="let character"> {{character.created | date:'yyyy-MM-dd'}} </td>
+  </ng-container>
+
+  <!-- Favorite Action Column -->
+  <ng-container matColumnDef="favorite">
+    <th mat-header-cell *matHeaderCellDef> Favorite </th>
+    <td mat-cell *matCellDef="let character">
+      <button mat-icon-button color="primary" (click)="markAsFavorite(character); $event.stopPropagation()">
+        <mat-icon>star</mat-icon>
+      </button>
+    </td>
   </ng-container>
 
   <!-- Header and Row Definitions -->
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectCharacter(row)"></tr>
 </table>
