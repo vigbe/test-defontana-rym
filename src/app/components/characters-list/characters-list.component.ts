@@ -63,6 +63,7 @@ export class CharactersListComponent implements OnInit {
   }
 
   markAsFavorite(character: any) {
-    this.favoritesService.setFavorite(character);
+    this.favoritesService.addFavorite(character);
+
   }
 }

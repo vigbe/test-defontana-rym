@@ -1,7 +1,7 @@
 <div style="display: flex;">
-<app-totals [characters]="characters"></app-totals>
-<app-favorites>
-</app-favorites>
+<app-favorites (favoriteSelected)="selectedCharacter = $event"></app-favorites>
+<!-- ... -->
+
 </div>
 <div style="display: flex;">
   <app-characters-list 
@@ -10,6 +10,7 @@
 </app-characters-list>
   <app-characters-details [character]="selectedCharacter"></app-characters-details>
 </div>
+<app-totals [characters]="characters"></app-totals>
 
 
 
