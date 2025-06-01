@@ -29,7 +29,7 @@ export class CharactersListComponent implements OnInit {
     'type',
     'gender',
     'created',
-    'favorite' // <-- Solo si tienes la columna de favoritos en el HTML
+    'favorite'
   ];
   characters: any[] = [];
   filters = { name: '', status: '', species: '', type: '', gender: '', created: '' };

@@ -1,18 +1,24 @@
-<div *ngIf="character; else noCharacter">
-  <img [src]="character.image" [alt]="character.name" class="character-image" />
-  <h2>{{ character.name }}</h2>
-  <p><strong>Estado Actual:</strong> {{ character.status }}</p>
-  <p><strong>Especie:</strong> {{ character.species }}</p>
-  <p><strong>Tipo:</strong> {{ character.type || 'Ninguno especifico' }}</p>
-  <p><strong>Genero:</strong> {{ character.gender }}</p>
-  <p><strong>Fecha de creacion:</strong> {{ character.created | date:'yyyy-MM-dd' }}</p>
+<div *ngIf="gqlCharacter; else noCharacter">
+  <!-- ...otros campos... -->
+  <div class="location-block">
+    <h3>Origen</h3>
+    <p><strong>Nombre:</strong> {{ gqlCharacter.origin?.name || 'Desconocido' }}</p>
+    <div *ngIf="gqlCharacter?.origin?.residents?.length; else noOriginResidents">
+      <span *ngFor="let resident of (gqlCharacter?.origin?.residents || []) | slice:0:3; let i = index">
+        Residente {{i + 1}}: {{ resident.name }}
+      </span>
+    </div>
+    <ng-template #noOriginResidents>
+      <span>No tiene residentes.</span>
+    </ng-template>
+  </div>
 
   <div class="location-block">
     <h3>Localización</h3>
-    <p><strong>Nombre:</strong> {{ location?.name || 'Desconocido' }}</p>
-    <div *ngIf="locationResidents.length; else noLocationResidents">
-      <span *ngFor="let resident of locationResidents; let i = index">
-        Residente {{i + 1}}: {{ resident }}
+    <p><strong>Nombre:</strong> {{ gqlCharacter.location?.name || 'Desconocido' }}</p>
+    <div *ngIf="gqlCharacter?.location?.residents?.length; else noLocationResidents">
+      <span *ngFor="let resident of (gqlCharacter?.location?.residents || []) | slice:0:3; let i = index">
+        Residente {{i + 1}}: {{ resident.name }}
       </span>
     </div>
     <ng-template #noLocationResidents>
@@ -22,7 +28,9 @@
 
   <div class="episode-block">
     <h3>Episodio</h3>
-    <span *ngIf="episode; else noEpisode">{{ episode?.name }}</span>
+    <span *ngIf="gqlCharacter?.episode?.length; else noEpisode">
+      {{ gqlCharacter?.episode?.[0]?.name }}
+    </span>
     <ng-template #noEpisode>
       <span>No tiene episodios.</span>
     </ng-template>

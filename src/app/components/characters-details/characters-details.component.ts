@@ -1,60 +1,53 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { CharacterService } from '../../services/character.service';
-import { NgIf, NgFor, DatePipe } from '@angular/common';
+import { GraphqlCharacterService } from '../../services/graphql-character.service';
+import { NgIf, NgFor, DatePipe, SlicePipe } from '@angular/common';
+
+interface Resident {
+  id: string;
+  name: string;
+  image: string;
+}
+interface CharacterDetails {
+  id: string;
+  name: string;
+  image: string;
+  status: string;
+  species: string;
+  type: string;
+  gender: string;
+  created: string;
+  origin?: {
+    name: string;
+    residents: Resident[];
+  };
+  location?: {
+    name: string;
+    residents: Resident[];
+  };
+  episode?: { id: string; name: string }[];
+}
+
 
 @Component({
   selector: 'app-characters-details',
   templateUrl: './characters-details.component.html',
   styleUrls: ['./characters-details.component.scss'],
   standalone: true,
-  imports: [NgIf, NgFor, DatePipe]
+  imports: [NgIf, NgFor, DatePipe, SlicePipe]
 })
 export class CharactersDetailsComponent implements OnChanges {
   @Input() character: any;
-  origin: any = null;
-  originResidents: any[] = [];
-  location: any = null;
-  locationResidents: any[] = [];
-  episode: any = null;
+  gqlCharacter: CharacterDetails | null = null;
 
-  constructor(private characterService: CharacterService) {}
+  constructor(private graphqlCharacterService: GraphqlCharacterService) {}
 
   ngOnChanges() {
-    if (this.character) {
-      // Origen
-      if (this.character.origin?.url) {
-        this.characterService.getLocation(this.character.origin.url).subscribe(loc => {
-          this.origin = loc;
-          this.originResidents = (loc.residents && loc.residents.length)
-            ? loc.residents.slice(0, 3) // Muestra hasta 3 residentes si quieres
-            : [];
+    if (this.character?.id) {
+      this.graphqlCharacterService.getCharacterWithResidents(this.character.id)
+        .subscribe(result => {
+          // Cast explícito para ayudar a Angular
+          this.gqlCharacter = result.data.character as CharacterDetails;
         });
-      } else {
-        this.origin = null;
-        this.originResidents = [];
-      }
-
-      // Localización
-      if (this.character.location?.url) {
-        this.characterService.getLocation(this.character.location.url).subscribe(loc => {
-          this.location = loc;
-          this.locationResidents = (loc.residents && loc.residents.length)
-            ? loc.residents.slice(0, 3)
-            : [];
-        });
-      } else {
-        this.location = null;
-        this.locationResidents = [];
-      }
-
-      // Episodio
-      if (this.character.episode?.length) {
-        this.characterService.getEpisode(this.character.episode[0]).subscribe(ep => {
-          this.episode = ep;
-        });
-      } else {
-        this.episode = null;
-      }
     }
   }
 }

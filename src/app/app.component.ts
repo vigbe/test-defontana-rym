@@ -1,4 +1,4 @@
-// app.component.ts
+
 import { Component } from '@angular/core';
 import { TotalsComponent } from './components/totals/totals.component';
 import { CharactersDetailsComponent } from './components/characters-details/characters-details.component';
@@ -13,6 +13,6 @@ import { FavoritesComponent } from './components/favorites/favorites.component';
     imports: [FavoritesComponent, CharactersListComponent, CharactersDetailsComponent, TotalsComponent]
 })
 export class AppComponent {
-  characters: any[] = []; // <-- Para <app-totals>
-  selectedCharacter: any = null; // <-- Para <app-characters-details>
+  characters: any[] = []; 
+  selectedCharacter: any = null; 
 }
