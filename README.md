@@ -1,4 +1,7 @@
+A continuación detallo el codigo y el cumplimiento de los requerimientos solicitados
+
 REQUERIMIENTOS BÁSICOS
+
 
 Angular 14 o superior
 "Utilicé Angular 17 en el proyecto, como se ve en mi package.json con "@angular/core": "^17.0.0". 
