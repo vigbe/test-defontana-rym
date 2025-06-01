@@ -6,6 +6,10 @@ import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-characters-list',
@@ -17,16 +21,21 @@ import { MatIconModule } from '@angular/material/icon';
     SearchFiltersComponent,
     MatTableModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
   ]
 })
 export class CharactersListComponent implements OnInit {
+
+  searchControl = new FormControl('');
+ 
   displayedColumns: string[] = [
     'image', 'name', 'status', 'species', 'type', 'gender', 'created', 'favorite'
   ];
-  // Cambia el tipado aquí:
   filters: { [key: string]: string } = {
-    name: '', status: '', species: '', type: '', gender: '', created: ''
+     status: '', species: '', type: '', gender: '', created: '', name: ''
   };
   characters: any[] = [];
 
@@ -39,6 +48,14 @@ export class CharactersListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.searchControl.valueChanges.pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      switchMap(name => this.characterService.getCharacters({ name }))
+    ).subscribe((data: any) => {
+      this.characters = data.results;
+    });
+
     this.loadCharacters();
   }
 
@@ -48,9 +65,8 @@ export class CharactersListComponent implements OnInit {
   }
 
   loadCharacters() {
-    this.characterService.getCharacters(this.filters).subscribe((data: any) => {
+    this.characterService.getCharacters().subscribe((data: any) => {
       this.characters = data.results;
-      this.charactersChange.emit(this.characters);
     });
   }
 

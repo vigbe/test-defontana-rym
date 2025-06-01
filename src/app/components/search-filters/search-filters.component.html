@@ -1,19 +1,16 @@
-<input type="text" placeholder="Nombre" [(ngModel)]="filters.name"
-(input)="emitChange()" />
-
-<select [(ngModel)]="filters.species" (change)="emitChange()">
+<select class="filter-input" [(ngModel)]="filters.species" (change)="emitChange()" >
   <option value="">Todas las especies</option>
   <option *ngFor="let s of speciesList" [value]="s">{{ s }}</option>
 </select>
 
-<select [(ngModel)]="filters.type" (change)="emitChange()">
+<select class="filter-input" [(ngModel)]="filters.type" (change)="emitChange()">
   <option value="">Todos los tipos</option>
   <option *ngFor="let t of typeList" [value]="t">{{ t }}</option>
 </select>
   
-<select [(ngModel)]="filters.status" (change)="emitChange()">
+<select class="filter-input" [(ngModel)]="filters.status" (change)="emitChange()">
   <option value="">Todos los estados</option>
   <option value="Alive">Vivo</option>
   <option value="Dead">Muerto</option>
-  <option value="unknown">Desconocido</option>
-  
+  <option value="unknown">Desconocido</option>  
+</select>
