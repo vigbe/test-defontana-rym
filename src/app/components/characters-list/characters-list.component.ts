@@ -10,7 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { merge } from 'rxjs';
+import { CapitalizePipe } from '../../pipes/capitalize.pipe';
 
 @Component({
   selector: 'app-characters-list',
@@ -26,6 +26,7 @@ import { merge } from 'rxjs';
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
+    CapitalizePipe
   ]
 })
 export class CharactersListComponent implements OnInit {

@@ -20,6 +20,7 @@
   <ng-container matColumnDef="image">
     <th mat-header-cell *matHeaderCellDef> Foto </th>
     <td mat-cell *matCellDef="let character">
+      {{ character.species | capitalize }}
       <img [src]="character.image" [alt]="character.name" class="avatar-img" width="40" height="40" style="border-radius:50%;">
     </td>
   </ng-container>
