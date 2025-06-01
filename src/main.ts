@@ -23,7 +23,7 @@ bootstrapApplication(AppComponent, {
 
       return {
         link: httpLink.create({
-          uri: '<%= endpoint %>',
+          uri: 'https://rickandmortyapi.com/graphql',
         }),
         cache: new InMemoryCache(),
       };

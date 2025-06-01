@@ -16,17 +16,11 @@ interface CharacterDetails {
   type: string;
   gender: string;
   created: string;
-  origin?: {
-    name: string;
-    residents: Resident[];
-  };
-  location?: {
-    name: string;
-    residents: Resident[];
-  };
-  episode?: { id: string; name: string }[];
+  origin?: { name: string; residents: Resident[] };
+  location?: { name: string; residents: Resident[] };
+   episode?: { name: string }[];  
+  
 }
-
 
 @Component({
   selector: 'app-characters-details',
@@ -36,8 +30,9 @@ interface CharacterDetails {
   imports: [NgIf, NgFor, DatePipe, SlicePipe]
 })
 export class CharactersDetailsComponent implements OnChanges {
-  @Input() character: any;
-  gqlCharacter: CharacterDetails | null = null;
+@Input() character: any;
+  gqlCharacter: CharacterDetails | null = null;  // Tipo explícito
+  
 
   constructor(private graphqlCharacterService: GraphqlCharacterService) {}
 
@@ -49,5 +44,12 @@ export class CharactersDetailsComponent implements OnChanges {
           this.gqlCharacter = result.data.character as CharacterDetails;
         });
     }
+  }
+
+  copiarUrlDelPersonaje() {
+    if (!this.gqlCharacter) return;
+    const url = `${window.location.origin}${window.location.pathname}?characterId=${encodeURIComponent(this.gqlCharacter.id)}`;
+    navigator.clipboard.writeText(url);
+    alert('¡URL del personaje copiada al portapapeles!');
   }
 }

@@ -1,5 +1,15 @@
 <div *ngIf="gqlCharacter; else noCharacter">
-  <!-- ...otros campos... -->
+  <img [src]="gqlCharacter.image" [alt]="gqlCharacter.name" class="character-image" />
+  <h2>{{ gqlCharacter.name }}</h2>
+  <button mat-raised-button color="accent" (click)="copiarUrlDelPersonaje()">
+    Compartir personaje
+  </button>
+  <p><strong>Status:</strong> {{ gqlCharacter.status }}</p>
+  <p><strong>Species:</strong> {{ gqlCharacter.species }}</p>
+  <p><strong>Type:</strong> {{ gqlCharacter.type || 'N/A' }}</p>
+  <p><strong>Gender:</strong> {{ gqlCharacter.gender }}</p>
+  <p><strong>Created:</strong> {{ gqlCharacter.created | date:'yyyy-MM-dd' }}</p>
+
   <div class="location-block">
     <h3>Origen</h3>
     <p><strong>Nombre:</strong> {{ gqlCharacter.origin?.name || 'Desconocido' }}</p>
@@ -26,16 +36,20 @@
     </ng-template>
   </div>
 
-  <div class="episode-block">
-    <h3>Episodio</h3>
-    <span *ngIf="gqlCharacter?.episode?.length; else noEpisode">
-      {{ gqlCharacter?.episode?.[0]?.name }}
+<div class="episode-block">
+  <h3>Episodio</h3>
+  <ng-container *ngIf="gqlCharacter?.episode as episodes">
+    <span *ngIf="episodes.length > 0; else noEpisode">
+      {{ episodes[0].name }}
     </span>
-    <ng-template #noEpisode>
-      <span>No tiene episodios.</span>
-    </ng-template>
-  </div>
+  </ng-container>
+  <ng-template #noEpisode>
+    <span>No tiene episodios.</span>
+  </ng-template>
 </div>
+
+</div>
+
 <ng-template #noCharacter>
   <p>Selecciona un personaje para ver los detalles.</p>
 </ng-template>

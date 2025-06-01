@@ -1,16 +1,48 @@
-import { TestBed } from '@angular/core/testing';
+// src/app/services/graphql-character.service.ts
+import { Injectable } from '@angular/core';
+import { Apollo, gql } from 'apollo-angular';
 
-import { GraphqlCharacterService } from './graphql-character.service';
+@Injectable({ providedIn: 'root' })
+export class GraphqlCharacterService {
+  constructor(private apollo: Apollo) {}
 
-describe('GraphqlCharacterService', () => {
-  let service: GraphqlCharacterService;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(GraphqlCharacterService);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+  getCharacterWithResidents(id: string) {
+    return this.apollo.query<any>({
+      query: gql`
+        query GetCharacterWithResidents($id: ID!) {
+          character(id: $id) {
+            id
+            name
+            image
+            status
+            species
+            type
+            gender
+            created
+            origin {
+              name
+              residents {
+                id
+                name
+                image
+              }
+            }
+            location {
+              name
+              residents {
+                id
+                name
+                image
+              }
+            }
+            episode {
+              id
+              name
+            }
+          }
+        }
+      `,
+      variables: { id }
+    });
+  }
+}

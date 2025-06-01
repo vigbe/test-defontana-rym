@@ -22,17 +22,13 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class CharactersListComponent implements OnInit {
   displayedColumns: string[] = [
-    'name',
-    'image',
-    'status',
-    'species',
-    'type',
-    'gender',
-    'created',
-    'favorite'
+    'image', 'name', 'status', 'species', 'type', 'gender', 'created', 'favorite'
   ];
+  // Cambia el tipado aquí:
+  filters: { [key: string]: string } = {
+    name: '', status: '', species: '', type: '', gender: '', created: ''
+  };
   characters: any[] = [];
-  filters = { name: '', status: '', species: '', type: '', gender: '', created: '' };
 
   @Output() charactersChange = new EventEmitter<any[]>();
   @Output() characterSelected = new EventEmitter<any>();
@@ -64,6 +60,15 @@ export class CharactersListComponent implements OnInit {
 
   markAsFavorite(character: any) {
     this.favoritesService.addFavorite(character);
+  }
 
+  copiarUrlConFiltros() {
+    const params = new URLSearchParams();
+    Object.keys(this.filters).forEach(key => {
+      if (this.filters[key]) params.set(key, this.filters[key]);
+    });
+    const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+    navigator.clipboard.writeText(url);
+    alert('¡URL copiada al portapapeles!');
   }
 }
