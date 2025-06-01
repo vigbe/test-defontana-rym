@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { merge } from 'rxjs';
 
 @Component({
   selector: 'app-characters-list',
@@ -29,14 +30,19 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 })
 export class CharactersListComponent implements OnInit {
 
+  typeTotals: { key: string, count: number }[] = [];
+  speciesTotals: { key: string, count: number }[] = [];
+
   searchControl = new FormControl('');
- 
+
   displayedColumns: string[] = [
     'image', 'name', 'status', 'species', 'type', 'gender', 'created', 'favorite'
   ];
+
   filters: { [key: string]: string } = {
-     status: '', species: '', type: '', gender: '', created: '', name: ''
+    name: '', status: '', species: '', type: '', gender: '', created: '', 
   };
+
   characters: any[] = [];
 
   @Output() charactersChange = new EventEmitter<any[]>();
@@ -48,26 +54,45 @@ export class CharactersListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.searchControl.valueChanges.pipe(
-      debounceTime(400),
-      distinctUntilChanged(),
-      switchMap(name => this.characterService.getCharacters({ name }))
-    ).subscribe((data: any) => {
-      this.characters = data.results;
-    });
-
+  this.searchControl.valueChanges.pipe(
+    debounceTime(400),
+    distinctUntilChanged()
+  ).subscribe((name: string | null) => {
+    this.filters['name'] = name || '';
     this.loadCharacters();
-  }
+  });
+
+  this.loadCharacters();
+}
 
   onFilterChange(filters: any) {
-    this.filters = filters;
+    this.filters = { ...this.filters, ...filters };
     this.loadCharacters();
   }
 
   loadCharacters() {
-    this.characterService.getCharacters().subscribe((data: any) => {
-      this.characters = data.results;
+    this.characterService.getCharacters(this.filters).subscribe((data: any) => {
+      this.characters = data.results || [];
+      this.calculateTotals();
+      this.charactersChange.emit(this.characters);
     });
+  }
+
+  calculateTotals() {
+    // Totales por tipo
+    const typeMap: { [key: string]: number } = {};
+    const speciesMap: { [key: string]: number } = {};
+
+    for (const c of this.characters) {
+      const typeKey = c.type || 'Sin tipo';
+      typeMap[typeKey] = (typeMap[typeKey] || 0) + 1;
+
+      const speciesKey = c.species || 'Sin especie';
+      speciesMap[speciesKey] = (speciesMap[speciesKey] || 0) + 1;
+    }
+
+    this.typeTotals = Object.entries(typeMap).map(([key, count]) => ({ key, count }));
+    this.speciesTotals = Object.entries(speciesMap).map(([key, count]) => ({ key, count }));
   }
 
   selectCharacter(character: any) {
