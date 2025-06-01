@@ -1,8 +1,6 @@
 <div class="filters">
   <app-search-filters (filterChange)="onFilterChange($event)"></app-search-filters>
-  <button mat-raised-button color="primary" (click)="copiarUrlConFiltros()">
-    Compartir búsqueda
-  </button>
+
 </div>
 
 <table mat-table [dataSource]="characters" class="mat-elevation-z8">
@@ -17,43 +15,43 @@
 
   <!-- Nombre -->
   <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <th mat-header-cell *matHeaderCellDef> Nombre </th>
     <td mat-cell *matCellDef="let character"> {{ character.name }} </td>
   </ng-container>
 
   <!-- Estado -->
   <ng-container matColumnDef="status">
-    <th mat-header-cell *matHeaderCellDef> Status </th>
+    <th mat-header-cell *matHeaderCellDef> Estado </th>
     <td mat-cell *matCellDef="let character"> {{ character.status }} </td>
   </ng-container>
 
   <!-- Especie -->
   <ng-container matColumnDef="species">
-    <th mat-header-cell *matHeaderCellDef> Species </th>
+    <th mat-header-cell *matHeaderCellDef> Especies </th>
     <td mat-cell *matCellDef="let character"> {{ character.species }} </td>
   </ng-container>
 
   <!-- Tipo -->
   <ng-container matColumnDef="type">
-    <th mat-header-cell *matHeaderCellDef> Type </th>
+    <th mat-header-cell *matHeaderCellDef> Tipo </th>
     <td mat-cell *matCellDef="let character"> {{ character.type || 'N/A' }} </td>
   </ng-container>
 
   <!-- Género -->
   <ng-container matColumnDef="gender">
-    <th mat-header-cell *matHeaderCellDef> Gender </th>
+    <th mat-header-cell *matHeaderCellDef> Genero </th>
     <td mat-cell *matCellDef="let character"> {{ character.gender }} </td>
   </ng-container>
 
   <!-- Fecha de creación -->
   <ng-container matColumnDef="created">
-    <th mat-header-cell *matHeaderCellDef> Created </th>
+    <th mat-header-cell *matHeaderCellDef> Fecha creación </th>
     <td mat-cell *matCellDef="let character"> {{ character.created | date:'yyyy-MM-dd' }} </td>
   </ng-container>
 
   <!-- Favorito (opcional, si tienes esta columna en displayedColumns) -->
   <ng-container matColumnDef="favorite">
-    <th mat-header-cell *matHeaderCellDef> Favorite </th>
+    <th mat-header-cell *matHeaderCellDef> Es favorito </th>
     <td mat-cell *matCellDef="let character">
       <button mat-icon-button color="primary" (click)="markAsFavorite(character); $event.stopPropagation()">
         <mat-icon>star</mat-icon>

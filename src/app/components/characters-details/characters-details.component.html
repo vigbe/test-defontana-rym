@@ -1,55 +1,80 @@
-<div *ngIf="gqlCharacter; else noCharacter">
-  <img [src]="gqlCharacter.image" [alt]="gqlCharacter.name" class="character-image" />
-  <h2>{{ gqlCharacter.name }}</h2>
-  <button mat-raised-button color="accent" (click)="copiarUrlDelPersonaje()">
-    Compartir personaje
-  </button>
-  <p><strong>Status:</strong> {{ gqlCharacter.status }}</p>
-  <p><strong>Species:</strong> {{ gqlCharacter.species }}</p>
-  <p><strong>Type:</strong> {{ gqlCharacter.type || 'N/A' }}</p>
-  <p><strong>Gender:</strong> {{ gqlCharacter.gender }}</p>
-  <p><strong>Created:</strong> {{ gqlCharacter.created | date:'yyyy-MM-dd' }}</p>
+<div *ngIf="gqlCharacter as character; else noCharacter" class="character-details-outer" style="margin-left: 60px; margin-right: 60px;">
+  <mat-card class="character-card">
+     <!-- Imagen -->
+      <div class="avatar-container" style="margin-top: 10px;">
+        <img [src]="character.image" [alt]="character.name" class="character-image" />
+      </div>
+    <div class="character-card-content">
+     
+      <!-- Info -->
+      <div class="character-info">
+        <h2>{{ character.name }}</h2>
+        <p class="subtitle">{{ character.status }} | {{ character.species }}</p>
+        <p><strong>Tipo:</strong> {{ character.type || 'N/A' }}</p>
+        <p><strong>Género:</strong> {{ character.gender }}</p>
+        <p><strong>Fecha de creación:</strong> {{ character.created | date:'yyyy-MM-dd' }}</p>
 
-  <div class="location-block">
-    <h3>Origen</h3>
-    <p><strong>Nombre:</strong> {{ gqlCharacter.origin?.name || 'Desconocido' }}</p>
-    <div *ngIf="gqlCharacter?.origin?.residents?.length; else noOriginResidents">
-      <span *ngFor="let resident of (gqlCharacter?.origin?.residents || []) | slice:0:3; let i = index">
-        Residente {{i + 1}}: {{ resident.name }}
-      </span>
+        <mat-divider></mat-divider>
+
+        <div class="location-block">
+          <h3>Origen</h3>
+          <p><strong>Lugar:</strong> {{ character.origin?.name || 'Desconocido' }}</p>
+          <div *ngIf="character.origin?.residents?.length; else noOriginResidents" class="residents-buttons">
+            <ng-container *ngFor="let resident of (character.origin?.residents || []) | slice:0:3">
+              <button mat-stroked-button color="primary" disabled>
+                {{ resident.name }}
+              </button>
+            </ng-container>
+          </div>
+          <ng-template #noOriginResidents>
+            <span class="no-residents">No tiene residentes.</span>
+          </ng-template>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="location-block">
+          <h3>Localización</h3>
+          <p><strong>Ubicación:</strong> {{ character.location?.name || 'Desconocido' }}</p>
+          <div *ngIf="character.location?.residents?.length; else noLocationResidents" class="residents-buttons">
+             <span >Otros personajes que se ubican en ese lugar</span>
+            <ng-container *ngFor="let resident of (character.location?.residents || []) | slice:0:3">
+             
+              <button mat-stroked-button color="accent" disabled>
+                {{ resident.name }}
+              </button>
+            </ng-container>
+          </div>
+          <ng-template #noLocationResidents>
+            <span class="no-residents">No tiene residentes.</span>
+          </ng-template>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="episode-block">
+          <h3>Episodio</h3>
+          <ng-container *ngIf="character.episode as episodes">
+            <span *ngIf="episodes.length > 0; else noEpisode">
+              {{ episodes[0].name }}
+            </span>
+          </ng-container>
+          <ng-template #noEpisode>
+            <span>No tiene episodios.</span>
+          </ng-template>
+        </div>
+
+        <div class="share-btn">
+         
+        </div>
+      </div>
     </div>
-    <ng-template #noOriginResidents>
-      <span>No tiene residentes.</span>
-    </ng-template>
-  </div>
-
-  <div class="location-block">
-    <h3>Localización</h3>
-    <p><strong>Nombre:</strong> {{ gqlCharacter.location?.name || 'Desconocido' }}</p>
-    <div *ngIf="gqlCharacter?.location?.residents?.length; else noLocationResidents">
-      <span *ngFor="let resident of (gqlCharacter?.location?.residents || []) | slice:0:3; let i = index">
-        Residente {{i + 1}}: {{ resident.name }}
-      </span>
-    </div>
-    <ng-template #noLocationResidents>
-      <span>No tiene residentes.</span>
-    </ng-template>
-  </div>
-
-<div class="episode-block">
-  <h3>Episodio</h3>
-  <ng-container *ngIf="gqlCharacter?.episode as episodes">
-    <span *ngIf="episodes.length > 0; else noEpisode">
-      {{ episodes[0].name }}
-    </span>
-  </ng-container>
-  <ng-template #noEpisode>
-    <span>No tiene episodios.</span>
-  </ng-template>
-</div>
-
+  </mat-card>
 </div>
 
 <ng-template #noCharacter>
-  <p>Selecciona un personaje para ver los detalles.</p>
+  <div class="no-character" style="text-align: center; margin: 60px;">
+    <mat-icon>info</mat-icon>
+    <p>Selecciona un personaje para ver los detalles.</p>
+  </div>
 </ng-template>

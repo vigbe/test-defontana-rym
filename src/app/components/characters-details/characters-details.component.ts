@@ -1,6 +1,10 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { GraphqlCharacterService } from '../../services/graphql-character.service';
 import { NgIf, NgFor, DatePipe, SlicePipe } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 interface Resident {
   id: string;
@@ -18,7 +22,7 @@ interface CharacterDetails {
   created: string;
   origin?: { name: string; residents: Resident[] };
   location?: { name: string; residents: Resident[] };
-   episode?: { name: string }[];  
+  episode?: { name: string }[];  
   
 }
 
@@ -27,7 +31,16 @@ interface CharacterDetails {
   templateUrl: './characters-details.component.html',
   styleUrls: ['./characters-details.component.scss'],
   standalone: true,
-  imports: [NgIf, NgFor, DatePipe, SlicePipe]
+  imports: [
+    NgIf,
+    NgFor,
+    DatePipe,
+    SlicePipe,
+    MatCardModule,
+    MatDividerModule,
+    MatButtonModule,
+    MatIconModule
+  ]
 })
 export class CharactersDetailsComponent implements OnChanges {
 @Input() character: any;
